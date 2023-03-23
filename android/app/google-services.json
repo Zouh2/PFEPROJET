@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "812659089210",
+    "project_id": "pfeprojetc",
+    "storage_bucket": "pfeprojetc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812659089210:android:fbd754f8f90c7ec045fa03",
+        "android_client_info": {
+          "package_name": "com.example.finghadi1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812659089210-1tej0svum6bicqo8bud57bbgig2ld8dr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtDMIrTav6pKr5LjufKAyG03UCcA4MYts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812659089210-1tej0svum6bicqo8bud57bbgig2ld8dr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
