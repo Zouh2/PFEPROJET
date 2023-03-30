@@ -46,6 +46,8 @@ dependencies:
   google_sign_in: ^6.0.2
   line_awesome_flutter: ^2.0.0
   url_launcher: ^6.0.3
+  geolocator:
+  geocoding:
 
 dev_dependencies:
   flutter_test:

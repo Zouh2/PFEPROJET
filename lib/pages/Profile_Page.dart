@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../utils.dart';
 import 'aut_page.dart';
+import 'edit_password_page.dart';
 import 'menuprofile.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPress: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const Positions()),
+                              MaterialPageRoute(builder: (context) =>  Position()),
                             );
                           },
                         ),
@@ -72,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPress: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const Parametre()),
+                              MaterialPageRoute(builder: (context) => const EditPasswordPage()),
                             );
                           },
                         ),

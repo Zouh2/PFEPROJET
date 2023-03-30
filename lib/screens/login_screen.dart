@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:finghadi1/components/components.dart';
 import 'package:finghadi1/components/under_part.dart';
 import 'package:finghadi1/constants.dart';
-import 'package:finghadi1/screens/screens.dart';
 import 'package:finghadi1/widgets/widgets.dart';
-
 import '../aut_services.dart';
 import '../components/square_tile.dart';
 import '../pages/forgetpassword.dart';
-
-
 
 class Compte extends StatefulWidget {
   final Function()? onTap;

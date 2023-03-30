@@ -5,10 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:finghadi1/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../homePage.dart';
-
-import 'package:flutter/material.dart';
-
 class ContactUsPage extends StatelessWidget {
   final String email = 'anouarzouhri66@gmail.com';
   final String phone = '+212770498886';
@@ -18,7 +14,6 @@ class ContactUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

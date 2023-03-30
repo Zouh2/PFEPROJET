@@ -78,7 +78,7 @@ class Filtre extends StatelessWidget {
                             Switch(
                               value: false, // set the initial value of the switch
                               onChanged: (value) {
-                                // handle the state change of the switch
+
                               },
                             ),
                           ],

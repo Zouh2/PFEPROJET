@@ -93,7 +93,7 @@ class _AboutState extends State<About> {
                   maxWidth: 315*fem,
                 ),
                 child: Text(
-                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer.',
+                  'Notre travail vous montre toutes les options de transport disponibles autour de vous ainsi que les prochaines heures de départ, et vous montre la route la plus appropriée pour vos besoins',
                   style: SafeGoogleFont (
                     'Ubuntu',
                     fontSize: 16*ffem,

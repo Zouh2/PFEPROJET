@@ -1,233 +1,149 @@
-import 'package:finghadi1/homePage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:finghadi1/utils.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'Profile_Page.dart';
+import '../utils.dart';
 
-class Positions extends StatefulWidget {
-  const Positions({super.key});
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../utils.dart';
+
+class Position extends StatefulWidget {
   @override
-  State<Positions> createState() => _PositionsState();
+  _PositionState createState() => _PositionState();
 }
 
-class _PositionsState extends State<Positions> {
+class _PositionState extends State<Position> {
+  final TextEditingController _startController = TextEditingController();
+  final TextEditingController _endController = TextEditingController();
+
+  // Declare variables to hold the home and work locations
+  late double _homeLat;
+  late double _homeLong;
+  late double _workLat;
+  late double _workLong;
+
+  void _saveLocations(double homeLat, double homeLong, double workLat, double workLong) async {
+    try {
+      // Create a document reference for the current user
+      DocumentReference docRef = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+
+      // Create a map of data to be saved
+      Map<String, dynamic> data = {
+        'home_location': GeoPoint(homeLat, homeLong),
+        'work_location': GeoPoint(workLat, workLong),
+        'home_name': _startController.text.trim(),
+        'work_name': _endController.text.trim()
+      };
+
+      // Set the data for the document reference
+      await docRef.set(data);
+      print('Locations saved successfully!');
+    } catch (e) {
+      print('Error saving locations: $e');
+    }
+  }
+
+  Future<List<Location>> _getLocationFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      return locations;
+    } catch (e) {
+      print('Error getting location from address: $e');
+      throw Exception('Error getting location from address');
+    }
+  }
+
+
+  void getUserData() async {
+    final userDoc = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    final userData = await userDoc.get();
+    setState(() {
+      GeoPoint homeLocation = userData.get('home_location') as GeoPoint;
+      GeoPoint workLocation = userData.get('work_location') as GeoPoint;
+      String home = userData.get('home_name');
+      String Work = userData.get('work_name');
+      setState(() {
+        _homeLat = homeLocation.latitude;
+        _homeLong = homeLocation.longitude;
+        _startController.text = home ;
+        _workLat = workLocation.latitude;
+        _workLong = workLocation.longitude;
+        _endController.text = Work;
+      });
+    });
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double baseWidth = 360;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Container(
-            // savedpositionsQA9 (1:3760)
-            width: double.infinity,
-            decoration: BoxDecoration (
-              color: Color(0xffffffff),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  // autogrouputvvHDw (GQK9Yc8BgipHVC3gjrUTvV)
-                  padding: EdgeInsets.fromLTRB(13*fem, 20*fem, 18*fem, 274*fem),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        // autogroupumgymQ1 (GQK9PH4PuKuq2xB9LuumGy)
-                        margin: EdgeInsets.fromLTRB(8*fem, 40*fem, 92*fem, 53*fem),
-                        width: double.infinity,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 27*fem, 0*fem),
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const HomePage()),
-                                  );
-                                },
-                                style: TextButton.styleFrom (
-                                  padding: EdgeInsets.zero,
-                                ),
-                                child: Container(
-                                  width: 42*fem,
-                                  height: 42*fem,
-                                  child: Image.asset(
-                                    'assets/images/page-1/images/back-button-SvZ.png',
-                                    width: 42*fem,
-                                    height: 42*fem,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                'Votre Positions',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont (
-                                  'Ubuntu',
-                                  fontSize: 20*ffem,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1*ffem/fem,
-                                  letterSpacing: 0.1000000015*fem,
-                                  color: Color(0xff3f3d56),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        // group4028wbK (1:3764)
-                        margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 0*fem, 35*fem),
-                        padding: EdgeInsets.fromLTRB(12*fem, 15.5*fem, 20.83*fem, 16*fem),
-                        width: double.infinity,
-                        height: 73*fem,
-                        decoration: BoxDecoration (
-                          color: Color(0xfff5fcff),
-                          borderRadius: BorderRadius.circular(12*fem),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              // autogrouphw85aeH (GQK9orBnchQD4k2tgRhW85)
-                              margin: EdgeInsets.fromLTRB(0*fem, 0.5*fem, 15*fem, 0*fem),
-                              width: 40*fem,
-                              height: 41*fem,
-                              child: Image.asset(
-                                'assets/images/page-1/images/auto-group-hw85.png',
-                                width: 40*fem,
-                                height: 41*fem,
-                              ),
-                            ),
-                            Container(
-                              // autogroup2cb7Eyj (GQK9xqvoGFqw9L88PC2cB7)
-                              margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 49.83*fem, 0.5*fem),
-                              height: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    // domicileKkH (1:3770)
-                                    margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 0*fem, 1*fem),
-                                    child: Text(
-                                      'Domicile',
-                                      style: SafeGoogleFont (
-                                        'Ubuntu',
-                                        fontSize: 16*ffem,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.25*ffem/fem,
-                                        letterSpacing: 0.1000000015*fem,
-                                        color: Color(0xff000000),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    // n12rue70haynahdarabatnds (1:3771)
-                                    'n12 rue70 hay nahda, rabat',
-                                    style: SafeGoogleFont (
-                                      'Ubuntu',
-                                      fontSize: 13*ffem,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.5384615385*ffem/fem,
-                                      letterSpacing: 0.1000000015*fem,
-                                      color: Color(0xff464646),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              // iconsaxlinearmessageeditUWh (1:3781)
-                              margin: EdgeInsets.fromLTRB(0*fem, 1.5*fem, 0*fem, 0*fem),
-                              width: 28.33*fem,
-                              height: 28.33*fem,
-                              child: Image.asset(
-                                'assets/images/page-1/images/iconsax-linear-messageedit.png',
-                                width: 28.33*fem,
-                                height: 28.33*fem,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        // group4029wfB (1:3772)
-                        padding: EdgeInsets.fromLTRB(12*fem, 16*fem, 20.83*fem, 16*fem),
-                        width: double.infinity,
-                        decoration: BoxDecoration (
-                          color: Color(0xfff5fcff),
-                          borderRadius: BorderRadius.circular(12*fem),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              // autogroupwagmRqF (GQKALkTxtweUBujSBHwaGM)
-                              margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 15*fem, 0*fem),
-                              width: 40*fem,
-                              height: 41*fem,
-                              child: Image.asset(
-                                'assets/images/page-1/images/auto-group-wagm.png',
-                                width: 40*fem,
-                                height: 41*fem,
-                              ),
-                            ),
-                            Container(
-                              // travailtTw (1:3775)
-                              margin: EdgeInsets.fromLTRB(0*fem, 0*fem, 163.83*fem, 4*fem),
-                              child: Text(
-                                'Travail',
-                                style: SafeGoogleFont (
-                                  'Ubuntu',
-                                  fontSize: 16*ffem,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.25*ffem/fem,
-                                  letterSpacing: 0.1000000015*fem,
-                                  color: Color(0xff000000),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              // iconsaxlinearaddsquareART (1:3779)
-                              margin: EdgeInsets.fromLTRB(0*fem, 1*fem, 0*fem, 0*fem),
-                              width: 28.33*fem,
-                              height: 28.33*fem,
-                              child: Image.asset(
-                                'assets/images/page-1/images/iconsax-linear-addsquare.png',
-                                width: 28.33*fem,
-                                height: 28.33*fem,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  // navigationbarqGh (1:3761)
-                  padding: EdgeInsets.fromLTRB(8*fem, 0*fem, 8*fem, 0*fem),
-                  width: double.infinity,
-                  height: 80*fem,
-                  decoration: BoxDecoration (
-                    color: Color(0xfffffbfe),
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color:Colors.black),
+        centerTitle: true,
+        title: Text(
+          'Les positions',
+          style: SafeGoogleFont(
+            'Ubuntu',
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            height: 1.7,
+            color: const Color(0xFF3F3D56),
           ),
+        ),
+        toolbarHeight: 60,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: _startController,
+              decoration: InputDecoration(
+                hintText: 'Home Location ',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _endController,
+              decoration:  InputDecoration(
+                hintText: 'Work Location',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                List<Location> startLocations = await _getLocationFromAddress(_startController.text);
+                List<Location> endLocations = await _getLocationFromAddress(_endController.text);
+
+                if (startLocations.isNotEmpty && endLocations.isNotEmpty) {
+                  double homeLat = startLocations[0].latitude;
+                  double homeLong = startLocations[0].longitude;
+                  double workLat = endLocations[0].latitude;
+                  double workLong = endLocations[0].longitude;
+
+                  _saveLocations(homeLat, homeLong, workLat, workLong);
+                } else {
+                  print('Error getting location information for one or both addresses');
+                }
+              },
+              child: Text('Save Locations'),
+            ),
+          ],
         ),
       ),
     );
